@@ -42,7 +42,7 @@ end
 
 
 
-gem "rack-cors", "~> 2.0", require: "rack/cors"
+gem "rack-cors", "~> 3.0", require: "rack/cors"
 
 group :development, :test do
   gem "dotenv-rails"
