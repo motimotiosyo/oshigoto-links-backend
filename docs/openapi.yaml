@@ -1,0 +1,440 @@
+openapi: 3.0.3
+info:
+  title: Oshigoto Links API
+  description: エンジニア向け業界知識共有アプリケーション API
+  version: 1.0.0
+  contact:
+    name: API Support
+    url: https://github.com/motimotiosyo/oshigoto-links-backend
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Development server
+  - url: https://api.oshigoto-links.com/api/v1
+    description: Production server
+
+paths:
+  /stories:
+    get:
+      summary: Story一覧取得
+      description: Story一覧をページネーション付きで取得
+      tags:
+        - Stories
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          description: ページ番号
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: per_page
+          in: query
+          description: 1ページあたりの件数
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: sort
+          in: query
+          description: ソート順
+          required: false
+          schema:
+            type: string
+            default: "-created_at"
+            enum:
+              - "created_at"
+              - "-created_at"
+              - "updated_at"
+              - "-updated_at"
+              - "title"
+              - "-title"
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-Total-Count:
+              description: 総件数
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stories:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Story'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    
+    post:
+      summary: Story作成
+      description: 新しいStoryを作成
+      tags:
+        - Stories
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - story
+              properties:
+                story:
+                  $ref: '#/components/schemas/StoryInput'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  story:
+                    $ref: '#/components/schemas/Story'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /stories/{id}:
+    get:
+      summary: Story詳細取得
+      description: 指定されたIDのStory詳細を取得
+      tags:
+        - Stories
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Story ID
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  story:
+                    $ref: '#/components/schemas/Story'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    
+    put:
+      summary: Story更新
+      description: 指定されたIDのStoryを更新
+      tags:
+        - Stories
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Story ID
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - story
+              properties:
+                story:
+                  $ref: '#/components/schemas/StoryInput'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  story:
+                    $ref: '#/components/schemas/Story'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    
+    delete:
+      summary: Story削除
+      description: 指定されたIDのStoryを削除
+      tags:
+        - Stories
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Story ID
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT Bearer token for authentication
+
+  schemas:
+    Story:
+      type: object
+      required:
+        - id
+        - title
+        - body
+        - tags
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: integer
+          description: Story ID
+          example: 1
+        title:
+          type: string
+          description: Storyタイトル
+          maxLength: 255
+          example: "製造業でのコスト削減体験"
+        body:
+          type: string
+          description: Story本文
+          example: "工程改善により30%のコスト削減を実現した方法について共有します..."
+        tags:
+          type: array
+          description: タグ一覧
+          items:
+            type: string
+            maxLength: 50
+          example: ["コスト削減", "工程改善", "製造業"]
+        created_at:
+          type: string
+          format: date-time
+          description: 作成日時 (ISO8601/UTC)
+          example: "2025-01-15T10:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: 更新日時 (ISO8601/UTC)
+          example: "2025-01-15T10:00:00Z"
+
+    StoryInput:
+      type: object
+      required:
+        - title
+        - body
+      properties:
+        title:
+          type: string
+          description: Storyタイトル
+          maxLength: 255
+          minLength: 1
+          example: "製造業でのコスト削減体験"
+        body:
+          type: string
+          description: Story本文
+          minLength: 1
+          example: "工程改善により30%のコスト削減を実現した方法について共有します..."
+        tags:
+          type: array
+          description: タグ一覧
+          items:
+            type: string
+            maxLength: 50
+          maxItems: 10
+          example: ["コスト削減", "工程改善", "製造業"]
+
+    Pagination:
+      type: object
+      required:
+        - current_page
+        - total_pages
+        - total_count
+        - per_page
+      properties:
+        current_page:
+          type: integer
+          description: 現在のページ番号
+          minimum: 1
+          example: 1
+        total_pages:
+          type: integer
+          description: 総ページ数
+          minimum: 0
+          example: 5
+        total_count:
+          type: integer
+          description: 総件数
+          minimum: 0
+          example: 100
+        per_page:
+          type: integer
+          description: 1ページあたりの件数
+          minimum: 1
+          example: 20
+
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: エラーコード
+              enum:
+                - VALIDATION_ERROR
+                - NOT_FOUND
+                - UNAUTHORIZED
+                - FORBIDDEN
+                - CONFLICT
+                - RATE_LIMITED
+                - INTERNAL
+              example: "VALIDATION_ERROR"
+            message:
+              type: string
+              description: エラーメッセージ
+              example: "バリデーションエラーが発生しました"
+            details:
+              type: object
+              description: エラー詳細情報
+              additionalProperties: true
+              example:
+                title: ["は必須です"]
+                body: ["は1文字以上で入力してください"]
+            request_id:
+              type: string
+              description: リクエストID
+              example: "req_123456789"
+
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: "VALIDATION_ERROR"
+              message: "リクエストが不正です"
+              request_id: "req_123456789"
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: "UNAUTHORIZED"
+              message: "認証が必要です"
+              request_id: "req_123456789"
+
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: "FORBIDDEN"
+              message: "アクセスが拒否されました"
+              request_id: "req_123456789"
+
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: "NOT_FOUND"
+              message: "リソースが見つかりません"
+              request_id: "req_123456789"
+
+    UnprocessableEntity:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: "VALIDATION_ERROR"
+              message: "バリデーションエラーが発生しました"
+              details:
+                title: ["は必須です"]
+                body: ["は1文字以上で入力してください"]
+              request_id: "req_123456789"
+
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: "INTERNAL"
+              message: "サーバーエラーが発生しました"
+              request_id: "req_123456789"
