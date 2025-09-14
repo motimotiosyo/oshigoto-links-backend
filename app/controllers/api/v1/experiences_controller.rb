@@ -12,9 +12,11 @@ module Api
         per_page = [params[:per_page]&.to_i || 20, 100].min
         sort = params[:sort] || '-created_at'
         
+        offset = (page - 1) * per_page
+        
         experiences = Experience.sorted_by(sort)
-                      .page(page)
-                      .per(per_page)
+                      .limit(per_page)
+                      .offset(offset)
         
         total_count = Experience.count
         total_pages = (total_count.to_f / per_page).ceil
