@@ -1,4 +1,4 @@
-class Story < ApplicationRecord
+class Experience < ApplicationRecord
   # Validations
   validates :title, presence: true, length: { maximum: 255 }
   validates :body, presence: true

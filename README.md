@@ -70,11 +70,11 @@ spectral lint docs/openapi.yaml --fail-severity warn
 
 ### エンドポイント
 
-- `GET /api/v1/stories` - Story一覧取得
-- `GET /api/v1/stories/:id` - Story詳細取得
-- `POST /api/v1/stories` - Story作成
-- `PUT /api/v1/stories/:id` - Story更新
-- `DELETE /api/v1/stories/:id` - Story削除
+- `GET /api/v1/experiences` - Experience一覧取得
+- `GET /api/v1/experiences/:id` - Experience詳細取得
+- `POST /api/v1/experiences` - Experience作成
+- `PUT /api/v1/experiences/:id` - Experience更新
+- `DELETE /api/v1/experiences/:id` - Experience削除
 
 ### 認証
 
@@ -126,11 +126,11 @@ docs/
 app/
   controllers/
     api/v1/
-      stories_controller.rb # Story CRUD API
+      experiences_controller.rb # Experience CRUD API
     concerns/
-      error_renderable.rb   # エラーハンドリング統一
+      error_renderable.rb       # エラーハンドリング統一
   models/
-    story.rb               # Storyモデル
+    experience.rb              # Experienceモデル
 config/
   initializers/
     committee.rb           # API契約検証設定

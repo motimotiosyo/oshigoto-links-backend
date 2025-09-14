@@ -1,6 +1,6 @@
-class CreateStories < ActiveRecord::Migration[7.2]
+class CreateExperiences < ActiveRecord::Migration[7.2]
   def change
-    create_table :stories do |t|
+    create_table :experiences do |t|
       t.string :title, null: false, limit: 255
       t.text :body, null: false
       t.text :tags, array: true, default: []

@@ -13,12 +13,12 @@ servers:
     description: Production server
 
 paths:
-  /stories:
+  /experiences:
     get:
-      summary: Story一覧取得
-      description: Story一覧をページネーション付きで取得
+      summary: Experience一覧取得
+      description: Experience一覧をページネーション付きで取得
       tags:
-        - Stories
+        - Experiences
       security:
         - bearerAuth: []
       parameters:
@@ -66,10 +66,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  stories:
+                  experiences:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Story'
+                      $ref: '#/components/schemas/Experience'
                   pagination:
                     $ref: '#/components/schemas/Pagination'
         '401':
@@ -78,10 +78,10 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     
     post:
-      summary: Story作成
-      description: 新しいStoryを作成
+      summary: Experience作成
+      description: 新しいExperienceを作成
       tags:
-        - Stories
+        - Experiences
       security:
         - bearerAuth: []
       requestBody:
@@ -93,8 +93,8 @@ paths:
               required:
                 - story
               properties:
-                story:
-                  $ref: '#/components/schemas/StoryInput'
+                experience:
+                  $ref: '#/components/schemas/ExperienceInput'
       responses:
         '201':
           description: Created
@@ -103,8 +103,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  story:
-                    $ref: '#/components/schemas/Story'
+                  experience:
+                    $ref: '#/components/schemas/Experience'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -114,19 +114,19 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /stories/{id}:
+  /experiences/{id}:
     get:
-      summary: Story詳細取得
-      description: 指定されたIDのStory詳細を取得
+      summary: Experience詳細取得
+      description: 指定されたIDのExperience詳細を取得
       tags:
-        - Stories
+        - Experiences
       security:
         - bearerAuth: []
       parameters:
         - name: id
           in: path
           required: true
-          description: Story ID
+          description: Experience ID
           schema:
             type: integer
             minimum: 1
@@ -138,8 +138,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  story:
-                    $ref: '#/components/schemas/Story'
+                  experience:
+                    $ref: '#/components/schemas/Experience'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -148,17 +148,17 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     
     put:
-      summary: Story更新
-      description: 指定されたIDのStoryを更新
+      summary: Experience更新
+      description: 指定されたIDのExperienceを更新
       tags:
-        - Stories
+        - Experiences
       security:
         - bearerAuth: []
       parameters:
         - name: id
           in: path
           required: true
-          description: Story ID
+          description: Experience ID
           schema:
             type: integer
             minimum: 1
@@ -171,8 +171,8 @@ paths:
               required:
                 - story
               properties:
-                story:
-                  $ref: '#/components/schemas/StoryInput'
+                experience:
+                  $ref: '#/components/schemas/ExperienceInput'
       responses:
         '200':
           description: Success
@@ -181,8 +181,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  story:
-                    $ref: '#/components/schemas/Story'
+                  experience:
+                    $ref: '#/components/schemas/Experience'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -195,17 +195,17 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     
     delete:
-      summary: Story削除
-      description: 指定されたIDのStoryを削除
+      summary: Experience削除
+      description: 指定されたIDのExperienceを削除
       tags:
-        - Stories
+        - Experiences
       security:
         - bearerAuth: []
       parameters:
         - name: id
           in: path
           required: true
-          description: Story ID
+          description: Experience ID
           schema:
             type: integer
             minimum: 1
@@ -228,7 +228,7 @@ components:
       description: JWT Bearer token for authentication
 
   schemas:
-    Story:
+    Experience:
       type: object
       required:
         - id
@@ -240,16 +240,16 @@ components:
       properties:
         id:
           type: integer
-          description: Story ID
+          description: Experience ID
           example: 1
         title:
           type: string
-          description: Storyタイトル
+          description: Experienceタイトル
           maxLength: 255
           example: "製造業でのコスト削減体験"
         body:
           type: string
-          description: Story本文
+          description: Experience本文
           example: "工程改善により30%のコスト削減を実現した方法について共有します..."
         tags:
           type: array
@@ -269,7 +269,7 @@ components:
           description: 更新日時 (ISO8601/UTC)
           example: "2025-01-15T10:00:00Z"
 
-    StoryInput:
+    ExperienceInput:
       type: object
       required:
         - title
@@ -277,13 +277,13 @@ components:
       properties:
         title:
           type: string
-          description: Storyタイトル
+          description: Experienceタイトル
           maxLength: 255
           minLength: 1
           example: "製造業でのコスト削減体験"
         body:
           type: string
-          description: Story本文
+          description: Experience本文
           minLength: 1
           example: "工程改善により30%のコスト削減を実現した方法について共有します..."
         tags:

@@ -1,28 +1,28 @@
 module Api
   module V1
-    class StoriesController < ApplicationController
+    class ExperiencesController < ApplicationController
       include ErrorRenderable
       
-      before_action :set_story, only: [:show, :update, :destroy]
+      before_action :set_experience, only: [:show, :update, :destroy]
       before_action :authenticate_user!  # TODO: 認証機能実装後に有効化
       
-      # GET /api/v1/stories
+      # GET /api/v1/experiences
       def index
         page = params[:page]&.to_i || 1
         per_page = [params[:per_page]&.to_i || 20, 100].min
         sort = params[:sort] || '-created_at'
         
-        stories = Story.sorted_by(sort)
+        experiences = Experience.sorted_by(sort)
                       .page(page)
                       .per(per_page)
         
-        total_count = Story.count
+        total_count = Experience.count
         total_pages = (total_count.to_f / per_page).ceil
         
         response.headers['X-Total-Count'] = total_count.to_s
         
         render json: {
-          stories: stories.map { |story| serialize_story(story) },
+          experiences: experiences.map { |experience| serialize_experience(experience) },
           pagination: {
             current_page: page,
             total_pages: total_pages,
@@ -32,68 +32,68 @@ module Api
         }
       end
       
-      # GET /api/v1/stories/1
+      # GET /api/v1/experiences/1
       def show
         render json: {
-          story: serialize_story(@story)
+          experience: serialize_experience(@experience)
         }
       end
       
-      # POST /api/v1/stories
+      # POST /api/v1/experiences
       def create
-        story_params_hash = story_params
-        story = Story.new(story_params_hash)
+        experience_params_hash = experience_params
+        experience = Experience.new(experience_params_hash)
         
-        if story.save
+        if experience.save
           render json: {
-            story: serialize_story(story)
+            experience: serialize_experience(experience)
           }, status: :created
         else
           render_unprocessable_entity(
-            OpenStruct.new(record: story)
+            OpenStruct.new(record: experience)
           )
         end
       end
       
-      # PUT /api/v1/stories/1
+      # PUT /api/v1/experiences/1
       def update
-        story_params_hash = story_params
+        experience_params_hash = experience_params
         
-        if @story.update(story_params_hash)
+        if @experience.update(experience_params_hash)
           render json: {
-            story: serialize_story(@story)
+            experience: serialize_experience(@experience)
           }
         else
           render_unprocessable_entity(
-            OpenStruct.new(record: @story)
+            OpenStruct.new(record: @experience)
           )
         end
       end
       
-      # DELETE /api/v1/stories/1
+      # DELETE /api/v1/experiences/1
       def destroy
-        @story.destroy
+        @experience.destroy
         head :no_content
       end
       
       private
       
-      def set_story
-        @story = Story.find(params[:id])
+      def set_experience
+        @experience = Experience.find(params[:id])
       end
       
-      def story_params
-        params.require(:story).permit(:title, :body, tags: [])
+      def experience_params
+        params.require(:experience).permit(:title, :body, tags: [])
       end
       
-      def serialize_story(story)
+      def serialize_experience(experience)
         {
-          id: story.id,
-          title: story.title,
-          body: story.body,
-          tags: story.tags || [],
-          created_at: story.created_at.iso8601,
-          updated_at: story.updated_at.iso8601
+          id: experience.id,
+          title: experience.title,
+          body: experience.body,
+          tags: experience.tags || [],
+          created_at: experience.created_at.iso8601,
+          updated_at: experience.updated_at.iso8601
         }
       end
       
