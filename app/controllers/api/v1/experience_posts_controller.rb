@@ -1,6 +1,6 @@
 module Api
   module V1
-    class ExperiencesController < ApplicationController
+    class ExperiencePostsController < ApplicationController
       include ErrorRenderable
 
       before_action :set_experience, only: [ :show, :update, :destroy ]
@@ -43,7 +43,7 @@ module Api
 
       # POST /api/v1/experiences
       def create
-        experience_params_hash = experience_params
+        experience_params_hash = experience_post_params
         experience = ExperiencePost.new(experience_params_hash)
 
         if experience.save
@@ -59,7 +59,7 @@ module Api
 
       # PUT /api/v1/experiences/1
       def update
-        experience_params_hash = experience_params
+        experience_params_hash = experience_post_params
 
         if @experience.update(experience_params_hash)
           render json: {
@@ -84,8 +84,8 @@ module Api
         @experience = ExperiencePost.find(params[:id])
       end
 
-      def experience_params
-        params.require(:experience).permit(:title, :body)
+      def experience_post_params
+        params.require(:experience_post).permit(:title, :body, :user_id, :industry_id, :occupation_id, :status, :published_at)
       end
 
       def serialize_experience(experience)

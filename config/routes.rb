@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get :ping, to: "pings#show"  # TODO: 開発後に削除
-      resources :experiences, only: [ :index, :show, :create, :update, :destroy ]
+      resources :experience_posts, only: [ :index, :show, :create, :update, :destroy ]
     end
   end
 end
