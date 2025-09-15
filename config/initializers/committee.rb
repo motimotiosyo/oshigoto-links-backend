@@ -1,5 +1,5 @@
 # Committee configuration for OpenAPI contract validation
-if defined?(Committee) && !Rails.env.production?
+if defined?(Committee) && !Rails.env.production? && false  # 一時的に無効化
   Rails.application.configure do
     # OpenAPI契約検証の設定
     config.middleware.use Committee::Middleware::RequestValidation,

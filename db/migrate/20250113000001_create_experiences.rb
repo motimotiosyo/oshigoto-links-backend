@@ -8,8 +8,8 @@ class CreateExperiences < ActiveRecord::Migration[7.2]
       t.timestamps
     end
 
-    add_index :stories, :created_at
-    add_index :stories, :updated_at
-    add_index :stories, :tags, using: 'gin'
+    add_index :experiences, :created_at
+    add_index :experiences, :updated_at
+    add_index :experiences, :tags, using: 'gin'
   end
 end

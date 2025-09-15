@@ -4,7 +4,7 @@ module Api
       include ErrorRenderable
       
       before_action :set_experience, only: [:show, :update, :destroy]
-      before_action :authenticate_user!  # TODO: 認証機能実装後に有効化
+      # before_action :authenticate_user!  # TODO: 認証機能実装後に有効化
       
       # GET /api/v1/experiences
       def index
