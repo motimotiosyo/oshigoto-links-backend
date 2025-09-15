@@ -1,0 +1,5 @@
+extends: ["spectral:oas"]
+
+rules:
+  # 認証関連のルールを無効化（認証未実装のため）
+  oas3-operation-security-defined: off
