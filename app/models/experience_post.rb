@@ -2,6 +2,10 @@ class ExperiencePost < ApplicationRecord
   # Validations
   validates :title, presence: true, length: { maximum: 120 }
   validates :body, presence: true
+  validates :user_id, presence: true
+  validates :industry_id, presence: true
+  validates :occupation_id, presence: true
+  validates :status, presence: true, inclusion: { in: %w[draft published] }
 
   # Scopes
   scope :recent, -> { order(created_at: :desc) }
