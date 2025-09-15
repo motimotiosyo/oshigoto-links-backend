@@ -13,17 +13,17 @@ servers:
     description: Production server
 
 tags:
-  - name: Experiences
+  - name: ExperiencePosts
     description: 業界経験情報の管理
 
 paths:
-  /experiences:
+  /experience_posts:
     get:
-      operationId: listExperiences
+      operationId: listExperiencePosts
       summary: Experience一覧取得
       description: Experience一覧をページネーション付きで取得
       tags:
-        - Experiences
+        - ExperiencePosts
       security:
         - bearerAuth: []
       parameters:
@@ -83,11 +83,11 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     
     post:
-      operationId: createExperience
+      operationId: createExperiencePost
       summary: Experience作成
       description: 新しいExperienceを作成
       tags:
-        - Experiences
+        - ExperiencePosts
       security:
         - bearerAuth: []
       requestBody:
@@ -120,13 +120,13 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /experiences/{id}:
+  /experience_posts/{id}:
     get:
-      operationId: getExperience
+      operationId: getExperiencePost
       summary: Experience詳細取得
       description: 指定されたIDのExperience詳細を取得
       tags:
-        - Experiences
+        - ExperiencePosts
       security:
         - bearerAuth: []
       parameters:
@@ -155,11 +155,11 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     
     put:
-      operationId: updateExperience
+      operationId: updateExperiencePost
       summary: Experience更新
       description: 指定されたIDのExperienceを更新
       tags:
-        - Experiences
+        - ExperiencePosts
       security:
         - bearerAuth: []
       parameters:
@@ -203,11 +203,11 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     
     delete:
-      operationId: deleteExperience
+      operationId: deleteExperiencePost
       summary: Experience削除
       description: 指定されたIDのExperienceを削除
       tags:
-        - Experiences
+        - ExperiencePosts
       security:
         - bearerAuth: []
       parameters:
