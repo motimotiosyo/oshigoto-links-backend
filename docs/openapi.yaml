@@ -1,31 +1,31 @@
 openapi: 3.0.3
 info:
   title: Oshigoto Links API
-  description: エンジニア向け業界知識共有アプリケーション API
+  description: あらゆる「おしごと」体験を共有するプラットフォーム API
   version: 1.0.0
   contact:
     name: API Support
     url: https://github.com/motimotiosyo/oshigoto-links-backend
 servers:
-  - url: http://localhost:3000/api/v1
+  - url: http://localhost:3001/api/v1
     description: Development server
   - url: https://api.oshigoto-links.com/api/v1
-    description: Production server
+    description: Production server (未定)
 
 tags:
-  - name: Experiences
-    description: 業界経験情報の管理
+  - name: ExperiencePosts
+    description: おしごと体験投稿の管理
 
 paths:
-  /experiences:
+  /experience_posts:
     get:
-      operationId: listExperiences
-      summary: Experience一覧取得
-      description: Experience一覧をページネーション付きで取得
+      operationId: listExperiencePosts
+      summary: おしごと体験投稿一覧取得
+      description: おしごと体験投稿一覧をページネーション付きで取得
       tags:
-        - Experiences
-      security:
-        - bearerAuth: []
+        - ExperiencePosts
+      # security:
+      #   - bearerAuth: []  # TODO: 認証実装後に有効化
       parameters:
         - name: page
           in: query
@@ -83,13 +83,13 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     
     post:
-      operationId: createExperience
-      summary: Experience作成
-      description: 新しいExperienceを作成
+      operationId: createExperiencePost
+      summary: おしごと体験投稿作成
+      description: 新しいおしごと体験投稿を作成
       tags:
-        - Experiences
-      security:
-        - bearerAuth: []
+        - ExperiencePosts
+      # security:
+      #   - bearerAuth: []  # TODO: 認証実装後に有効化
       requestBody:
         required: true
         content:
@@ -120,15 +120,15 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /experiences/{id}:
+  /experience_posts/{id}:
     get:
-      operationId: getExperience
-      summary: Experience詳細取得
-      description: 指定されたIDのExperience詳細を取得
+      operationId: getExperiencePost
+      summary: おしごと体験投稿詳細取得
+      description: 指定されたIDのおしごと体験投稿詳細を取得
       tags:
-        - Experiences
-      security:
-        - bearerAuth: []
+        - ExperiencePosts
+      # security:
+      #   - bearerAuth: []  # TODO: 認証実装後に有効化
       parameters:
         - name: id
           in: path
@@ -155,13 +155,13 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     
     put:
-      operationId: updateExperience
-      summary: Experience更新
-      description: 指定されたIDのExperienceを更新
+      operationId: updateExperiencePost
+      summary: おしごと体験投稿更新
+      description: 指定されたIDのおしごと体験投稿を更新
       tags:
-        - Experiences
-      security:
-        - bearerAuth: []
+        - ExperiencePosts
+      # security:
+      #   - bearerAuth: []  # TODO: 認証実装後に有効化
       parameters:
         - name: id
           in: path
@@ -203,13 +203,13 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     
     delete:
-      operationId: deleteExperience
-      summary: Experience削除
-      description: 指定されたIDのExperienceを削除
+      operationId: deleteExperiencePost
+      summary: おしごと体験投稿削除
+      description: 指定されたIDのおしごと体験投稿を削除
       tags:
-        - Experiences
-      security:
-        - bearerAuth: []
+        - ExperiencePosts
+      # security:
+      #   - bearerAuth: []  # TODO: 認証実装後に有効化
       parameters:
         - name: id
           in: path
@@ -249,17 +249,17 @@ components:
       properties:
         id:
           type: integer
-          description: Experience ID
+          description: おしごと体験投稿 ID
           example: 1
         title:
           type: string
-          description: Experienceタイトル
+          description: おしごと体験投稿のタイトル
           maxLength: 120
-          example: "製造業でのコスト削減体験"
+          example: "在宅ワークでの集中力向上方法"
         body:
           type: string
-          description: Experience本文
-          example: "工程改善により30%のコスト削減を実現した方法について共有します..."
+          description: おしごと体験投稿の本文
+          example: "在宅ワークを始めてから集中力を保つのに苦労していましたが、ポモドーロテクニックを導入することで劇的に改善しました。"
         created_at:
           type: string
           format: date-time
@@ -279,15 +279,15 @@ components:
       properties:
         title:
           type: string
-          description: Experienceタイトル
+          description: おしごと体験投稿のタイトル
           maxLength: 120
           minLength: 1
-          example: "製造業でのコスト削減体験"
+          example: "在宅ワークでの集中力向上方法"
         body:
           type: string
-          description: Experience本文
+          description: おしごと体験投稿の本文
           minLength: 1
-          example: "工程改善により30%のコスト削減を実現した方法について共有します..."
+          example: "在宅ワークを始めてから集中力を保つのに苦労していましたが、ポモドーロテクニックを導入することで劇的に改善しました。25分集中→5分休憩のサイクルで作業効率が向上し、疲労感も軽減されました。"
 
     Pagination:
       type: object
