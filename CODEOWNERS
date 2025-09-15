@@ -1,0 +1,15 @@
+# Global owners
+* @motimotiosyo
+
+# API仕様書の変更は必ずAPIオーナーの承認が必要
+/docs/* @motimotiosyo
+
+# 重要な設定ファイル
+/.github/* @motimotiosyo
+/config/* @motimotiosyo
+/Gemfile* @motimotiosyo
+/docker-compose.yml @motimotiosyo
+/Dockerfile* @motimotiosyo
+
+# データベースマイグレーション
+/db/migrate/* @motimotiosyo
