@@ -10,18 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_01_13_000001) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_15_201400) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "experiences", force: :cascade do |t|
-    t.string "title", limit: 255, null: false
+    t.string "title", limit: 120, null: false
     t.text "body", null: false
-    t.text "tags", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_experiences_on_created_at"
-    t.index ["tags"], name: "index_experiences_on_tags", using: :gin
     t.index ["updated_at"], name: "index_experiences_on_updated_at"
   end
 end
