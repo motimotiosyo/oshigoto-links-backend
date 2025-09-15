@@ -14,26 +14,26 @@ module ErrorRenderable
   def render_bad_request(exception = nil)
     render_error(
       status: :bad_request,
-      code: 'VALIDATION_ERROR',
-      message: 'リクエストが不正です',
+      code: "VALIDATION_ERROR",
+      message: "リクエストが不正です",
       details: exception&.message
     )
   end
 
   # 401 Unauthorized
-  def render_unauthorized(message = '認証が必要です')
+  def render_unauthorized(message = "認証が必要です")
     render_error(
       status: :unauthorized,
-      code: 'UNAUTHORIZED',
+      code: "UNAUTHORIZED",
       message: message
     )
   end
 
   # 403 Forbidden
-  def render_forbidden(message = 'アクセスが拒否されました')
+  def render_forbidden(message = "アクセスが拒否されました")
     render_error(
       status: :forbidden,
-      code: 'FORBIDDEN',
+      code: "FORBIDDEN",
       message: message
     )
   end
@@ -42,8 +42,8 @@ module ErrorRenderable
   def render_not_found(exception = nil)
     render_error(
       status: :not_found,
-      code: 'NOT_FOUND',
-      message: 'リソースが見つかりません'
+      code: "NOT_FOUND",
+      message: "リソースが見つかりません"
     )
   end
 
@@ -60,17 +60,17 @@ module ErrorRenderable
 
     render_error(
       status: :unprocessable_entity,
-      code: 'VALIDATION_ERROR',
-      message: 'バリデーションエラーが発生しました',
+      code: "VALIDATION_ERROR",
+      message: "バリデーションエラーが発生しました",
       details: details
     )
   end
 
   # 429 Too Many Requests
-  def render_rate_limited(message = 'リクエスト制限に達しました')
+  def render_rate_limited(message = "リクエスト制限に達しました")
     render_error(
       status: :too_many_requests,
-      code: 'RATE_LIMITED',
+      code: "RATE_LIMITED",
       message: message
     )
   end
@@ -82,8 +82,8 @@ module ErrorRenderable
 
     render_error(
       status: :internal_server_error,
-      code: 'INTERNAL',
-      message: 'サーバーエラーが発生しました'
+      code: "INTERNAL",
+      message: "サーバーエラーが発生しました"
     )
   end
 
