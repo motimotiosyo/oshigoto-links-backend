@@ -10,16 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_15_201400) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_15_214713) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "experiences", force: :cascade do |t|
+  create_table "experience_posts", force: :cascade do |t|
     t.string "title", limit: 120, null: false
     t.text "body", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["created_at"], name: "index_experiences_on_created_at"
-    t.index ["updated_at"], name: "index_experiences_on_updated_at"
+    t.bigint "user_id", null: false
+    t.bigint "industry_id", null: false
+    t.bigint "occupation_id", null: false
+    t.string "status", limit: 16, null: false
+    t.timestamptz "published_at"
+    t.integer "likes_count", default: 0, null: false
+    t.integer "comments_count", default: 0, null: false
+    t.index ["created_at"], name: "index_experience_posts_on_created_at"
+    t.index ["industry_id", "created_at"], name: "index_experience_posts_on_industry_id_and_created_at"
+    t.index ["occupation_id", "created_at"], name: "index_experience_posts_on_occupation_id_and_created_at"
+    t.index ["updated_at"], name: "index_experience_posts_on_updated_at"
+    t.index ["user_id", "created_at"], name: "index_experience_posts_on_user_id_and_created_at"
+    t.index ["user_id"], name: "index_experience_posts_on_user_id"
   end
 end

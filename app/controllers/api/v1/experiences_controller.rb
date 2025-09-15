@@ -14,11 +14,11 @@ module Api
 
         offset = (page - 1) * per_page
 
-        experiences = Experience.sorted_by(sort)
+        experiences = ExperiencePost.sorted_by(sort)
                       .limit(per_page)
                       .offset(offset)
 
-        total_count = Experience.count
+        total_count = ExperiencePost.count
         total_pages = (total_count.to_f / per_page).ceil
 
         response.headers["X-Total-Count"] = total_count.to_s
@@ -44,7 +44,7 @@ module Api
       # POST /api/v1/experiences
       def create
         experience_params_hash = experience_params
-        experience = Experience.new(experience_params_hash)
+        experience = ExperiencePost.new(experience_params_hash)
 
         if experience.save
           render json: {
@@ -81,7 +81,7 @@ module Api
       private
 
       def set_experience
-        @experience = Experience.find(params[:id])
+        @experience = ExperiencePost.find(params[:id])
       end
 
       def experience_params
