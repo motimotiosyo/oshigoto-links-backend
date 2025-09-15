@@ -254,19 +254,12 @@ components:
         title:
           type: string
           description: Experienceタイトル
-          maxLength: 255
+          maxLength: 120
           example: "製造業でのコスト削減体験"
         body:
           type: string
           description: Experience本文
           example: "工程改善により30%のコスト削減を実現した方法について共有します..."
-        tags:
-          type: array
-          description: タグ一覧
-          items:
-            type: string
-            maxLength: 50
-          example: ["コスト削減", "工程改善", "製造業"]
         created_at:
           type: string
           format: date-time
@@ -287,7 +280,7 @@ components:
         title:
           type: string
           description: Experienceタイトル
-          maxLength: 255
+          maxLength: 120
           minLength: 1
           example: "製造業でのコスト削減体験"
         body:
@@ -295,14 +288,6 @@ components:
           description: Experience本文
           minLength: 1
           example: "工程改善により30%のコスト削減を実現した方法について共有します..."
-        tags:
-          type: array
-          description: タグ一覧
-          items:
-            type: string
-            maxLength: 50
-          maxItems: 10
-          example: ["コスト削減", "工程改善", "製造業"]
 
     Pagination:
       type: object

@@ -85,7 +85,7 @@ module Api
       end
 
       def experience_params
-        params.require(:experience).permit(:title, :body, tags: [])
+        params.require(:experience).permit(:title, :body)
       end
 
       def serialize_experience(experience)
@@ -93,7 +93,6 @@ module Api
           id: experience.id,
           title: experience.title,
           body: experience.body,
-          tags: experience.tags || [],
           created_at: experience.created_at.iso8601,
           updated_at: experience.updated_at.iso8601
         }
