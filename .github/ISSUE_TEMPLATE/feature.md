@@ -1,3 +1,11 @@
+---
+name: 機能要求
+about: 新機能を提案する
+title: '[FEATURE] '
+labels: enhancement
+assignees: ''
+---
+
 ## 概要
 <!-- 何を実装するかを簡潔に説明 -->
 
