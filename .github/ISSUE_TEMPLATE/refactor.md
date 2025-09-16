@@ -1,3 +1,11 @@
+---
+name: リファクタリング
+about: コードの改善を提案する
+title: '[REFACTOR] '
+labels: refactor
+assignees: ''
+---
+
 ## 目的
 （可読性/保守性/性能向上 等）
 
