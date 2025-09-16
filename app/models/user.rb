@@ -3,7 +3,7 @@ class User < ApplicationRecord
   has_secure_password
 
   # バリデーション
-  validates :account_name, presence: true, length: { maximum: 50 }, 
+  validates :account_name, presence: true, length: { maximum: 50 },
             uniqueness: { case_sensitive: false }
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 

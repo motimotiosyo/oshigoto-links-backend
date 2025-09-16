@@ -1,7 +1,7 @@
 class Api::V1::AuthController < ApplicationController
   def login
     user = User.find_by(account_name: params[:account_name])
-    
+
     if user&.authenticate(params[:password])
       token = generate_jwt_token(user)
       render json: {
