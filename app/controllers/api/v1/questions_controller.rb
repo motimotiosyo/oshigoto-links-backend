@@ -4,11 +4,12 @@ module Api
     class QuestionsController < ApplicationController
       # ErrorRenderableはバリデーション失敗などを統一JSONで返すための共通モジュール（render_unprocessable_entityを呼んでいる）
       include ErrorRenderable
+
       # show/update/destroy 実行前に対象レコードを @question に読み込み
       # TODO: 認証導入後は有効化
-      # before_action :authenticate_user!, only: %i[create update destroy]
+      # before_action :authenticate_user!, only: %i[ create update destroy ]
       # GET /api/v1/questions
-      before_action :set_question, only: %i[show update destroy]
+      before_action :set_question, only: %i[ show update destroy ]
 
       # 絞り込み対応。並び替えはモデル側の”sorted_by”に任せる
       def index
@@ -25,7 +26,7 @@ module Api
         total   = scope.count
         records = scope.offset((page - 1) * per_page).limit(per_page)
 
-        response.headers["X-Total-Count"] = total.to_s
+        response.headers[ "X-Total-Count" ] = total.to_s
 
         render json: {
           questions: records.map { |q| serialize(q) },
