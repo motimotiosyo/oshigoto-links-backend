@@ -7,20 +7,20 @@ module Api
 
       # 絞り込み対応。並び替えはモデル側の”sorted_by”に任せる
       def index
-        page     = params[ :page ]&.to_i || 1
-        per_page = [ params[ :per_page ]&.to_i || 20, 100 ].min
-        sort     = params[ :sort ] || "-created_at"
+        page     = params[:page]&.to_i || 1
+        per_page = [ params[:per_page]&.to_i || 20, 100 ].min
+        sort     = params[:sort] || "-created_at"
 
         scope = Question.all
-        scope = scope.where(status_label: params[ :status_label ]) if params[ :status_label ].present?
-        scope = scope.where(industry_id: params[ :industry_id ])   if params[ :industry_id ].present?
-        scope = scope.where(occupation_id: params[ :occupation_id ]) if params[ :occupation_id ].present?
+        scope = scope.where(status_label: params[:status_label]) if params[:status_label].present?
+        scope = scope.where(industry_id: params[:industry_id])   if params[:industry_id].present?
+        scope = scope.where(occupation_id: params[:occupation_id]) if params[:occupation_id].present?
         scope = scope.sorted_by(sort)
 
         total   = scope.count
         records = scope.offset((page - 1) * per_page).limit(per_page)
 
-        response.headers[ "X-Total-Count" ] = total.to_s
+        response.headers["X-Total-Count"] = total.to_s
 
         render json: {
           questions: records.map { |q| serialize(q) },

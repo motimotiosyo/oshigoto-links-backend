@@ -11,12 +11,10 @@ class Question < ApplicationRecord
 
   # 質問に対して複数の回答。質問が削除されたら関連回答も削除される
   has_many :answers, dependent: :destroy
-  
   # 質問に対して複数のいいね、ブックマーク、コメント（後で実装）
   # has_many :question_likes, dependent: :destroy
   # has_many :question_bookmarks, dependent: :destroy
   # has_many :question_comments, dependent: :destroy
-  
   # 回答に対して複数のいいね、ブックマーク、コメント（後で実装）
   # has_many :answer_likes, dependent: :destroy
   # has_many :answer_bookmarks, dependent: :destroy
