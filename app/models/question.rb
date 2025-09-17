@@ -6,17 +6,17 @@ class Question < ApplicationRecord
   belongs_to :industry_category,   optional: true
   belongs_to :occupation_category, optional: true
 
-  # 採用回答は存在しないことがあるのでNULL可
+  # ベスト回答は存在しないことがあるのでNULL可
   belongs_to :accepted_answer, class_name: "Answer", optional: true
 
   # 質問に対して複数の回答。質問が削除されたら関連回答も削除される
   has_many :answers, dependent: :destroy
-
+  
   # 質問に対して複数のいいね、ブックマーク、コメント（後で実装）
   # has_many :question_likes, dependent: :destroy
   # has_many :question_bookmarks, dependent: :destroy
   # has_many :question_comments, dependent: :destroy
-
+  
   # 回答に対して複数のいいね、ブックマーク、コメント（後で実装）
   # has_many :answer_likes, dependent: :destroy
   # has_many :answer_bookmarks, dependent: :destroy

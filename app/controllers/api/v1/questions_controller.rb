@@ -2,13 +2,7 @@
 module Api
   module V1
     class QuestionsController < ApplicationController
-      # ErrorRenderableはバリデーション失敗などを統一JSONで返すための共通モジュール（render_unprocessable_entityを呼んでいる）
       include ErrorRenderable
-
-      # show/update/destroy 実行前に対象レコードを @question に読み込み
-      # TODO: 認証導入後は有効化
-      # before_action :authenticate_user!, only: %i[ create update destroy ]
-      # GET /api/v1/questions
       before_action :set_question, only: %i[ show update destroy ]
 
       # 絞り込み対応。並び替えはモデル側の”sorted_by”に任せる
