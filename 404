@@ -1,0 +1,15 @@
+HTTP/1.1 404 Not Found
+x-frame-options: SAMEORIGIN
+x-xss-protection: 0
+x-content-type-options: nosniff
+x-permitted-cross-domain-policies: none
+referrer-policy: strict-origin-when-cross-origin
+content-type: application/json; charset=utf-8
+vary: Accept, Origin
+cache-control: no-cache
+x-request-id: 6126f764-4e79-4d6e-b5c9-a0d6ce4c631e
+x-runtime: 0.010509
+server-timing: start_processing.action_controller;dur=0.01, sql.active_record;dur=0.14, instantiation.active_record;dur=0.01, process_action.action_controller;dur=2.75
+content-length: 131
+
+{"error":{"code":"NOT_FOUND","message":"リソースが見つかりません","request_id":"6126f764-4e79-4d6e-b5c9-a0d6ce4c631e"}}
