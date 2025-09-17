@@ -25,9 +25,9 @@ class CreateQuestions < ActiveRecord::Migration[7.2]
       t.datetime :updated_at, null: false, default: -> { "CURRENT_TIMESTAMP" }
     end
 
-    add_index :questions, [:status_label, :updated_at]
-    add_index :questions, [:industry_id, :status_label, :created_at],   name: "idx_questions_industry_status_created"
-    add_index :questions, [:occupation_id, :status_label, :created_at], name: "idx_questions_occupation_status_created"
+    add_index :questions, [ :status_label, :updated_at ]
+    add_index :questions, [ :industry_id, :status_label, :created_at ],   name: "idx_questions_industry_status_created"
+    add_index :questions, [ :occupation_id, :status_label, :created_at ], name: "idx_questions_occupation_status_created"
     # accepted_answer_id の外部キーはanswers作成後に追加
   end
 end

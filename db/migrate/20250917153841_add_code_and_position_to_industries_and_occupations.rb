@@ -11,4 +11,3 @@ class AddCodeAndPositionToIndustriesAndOccupations < ActiveRecord::Migration[7.2
     add_index :occupations, :position
   end
 end
-

@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
       # 業界
       resources :industries, only: :index
-      
+
       # 職種
       resources :occupations, only: :index
 

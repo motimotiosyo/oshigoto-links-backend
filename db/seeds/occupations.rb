@@ -2,7 +2,7 @@ require "digest"
 
 def slugify(str)
   s = I18n.transliterate(str.to_s).to_s.parameterize
-  s.presence || "x#{Digest::SHA1.hexdigest(str.to_s)[0,8]}"
+  s.presence || "x#{Digest::SHA1.hexdigest(str.to_s)[0, 8]}"
 end
 
 # 職種一覧

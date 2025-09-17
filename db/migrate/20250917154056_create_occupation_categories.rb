@@ -7,7 +7,7 @@ class CreateOccupationCategories < ActiveRecord::Migration[7.2]
       t.integer :position, default: 0, null: false
       t.timestamps
     end
-    add_index :occupation_categories, [:occupation_id, :code], unique: true, name: "idx_occucat_occupation_code"
-    add_index :occupation_categories, [:occupation_id, :position]
+    add_index :occupation_categories, [ :occupation_id, :code ], unique: true, name: "idx_occucat_occupation_code"
+    add_index :occupation_categories, [ :occupation_id, :position ]
   end
 end

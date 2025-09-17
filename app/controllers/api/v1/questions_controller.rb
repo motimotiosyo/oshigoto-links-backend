@@ -2,7 +2,6 @@
 module Api
   module V1
     class QuestionsController < ApplicationController
-
       # ErrorRenderableはバリデーション失敗などを統一JSONで返すための共通モジュール（render_unprocessable_entityを呼んでいる）
       include ErrorRenderable
 
@@ -15,7 +14,7 @@ module Api
       # 絞り込み対応。並び替えはモデル側の”sorted_by”に任せる
       def index
         page     = params[:page]&.to_i || 1
-        per_page = [params[:per_page]&.to_i || 20, 100].min
+        per_page = [ params[:per_page]&.to_i || 20, 100 ].min
         sort     = params[:sort] || "-created_at"
 
         scope = Question.all
@@ -47,7 +46,7 @@ module Api
 
       # POST /api/v1/questions
       def create
-        q = Question.new(question_params) 
+        q = Question.new(question_params)
         if q.save
           render json: { question: serialize(q) }, status: :created
         else

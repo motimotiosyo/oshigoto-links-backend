@@ -7,7 +7,7 @@ class CreateIndustryCategories < ActiveRecord::Migration[7.2]
       t.integer :position, default: 0, null: false
       t.timestamps
     end
-    add_index :industry_categories, [:industry_id, :code], unique: true, name: "idx_indcat_industry_code"
-    add_index :industry_categories, [:industry_id, :position]
+    add_index :industry_categories, [ :industry_id, :code ], unique: true, name: "idx_indcat_industry_code"
+    add_index :industry_categories, [ :industry_id, :position ]
   end
 end
