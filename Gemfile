@@ -52,3 +52,5 @@ group :development, :test do
   gem "committee-rails"
   gem "rspec-rails"
 end
+
+gem "rubocop", "~> 1.80", group: :development

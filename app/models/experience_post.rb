@@ -1,4 +1,9 @@
 class ExperiencePost < ApplicationRecord
+  # 質問は必ずユーザー・業界・職種に属する
+  belongs_to :user
+  belongs_to :industry_category,   optional: true
+  belongs_to :occupation_category, optional: true
+
   # Validations
   validates :title, presence: true, length: { maximum: 120 }
   validates :body, presence: true
