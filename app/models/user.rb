@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   # パスワードハッシュ化
   has_secure_password
+  has_many :question_likes, dependent: :destroy
 
   # バリデーション
   validates :account_name, presence: true, length: { maximum: 50 },

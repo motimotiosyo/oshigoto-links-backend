@@ -5,8 +5,10 @@ Rails.application.routes.draw do
       get :ping, to: "pings#show"  # TODO: 開発後に削除
       resources :experience_posts, only: [ :index, :show, :create, :update, :destroy ]
       resources :questions, only: [ :index, :show, :create, :update, :destroy ] do
-        resources :answers, only: [ :index, :create, :update, :destroy ]
-    end
+        resources :answers, only: [] do
+        resource :answer_like, only: [ :create, :destroy ]
+        end
+      end
 
       # ユーザー登録
       resources :users, only: [ :create ]

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_17_175513) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_19_030527) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_17_175513) do
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "likes_count", default: 0, null: false
+    t.index ["likes_count"], name: "index_answers_on_likes_count"
     t.index ["question_id"], name: "index_answers_on_question_id"
     t.index ["user_id"], name: "index_answers_on_user_id"
   end
@@ -90,22 +92,32 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_17_175513) do
     t.index ["position"], name: "index_occupations_on_position"
   end
 
+  create_table "question_likes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "question_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_question_likes_on_question_id"
+    t.index ["user_id", "question_id"], name: "index_question_likes_on_user_id_and_question_id", unique: true
+    t.index ["user_id"], name: "index_question_likes_on_user_id"
+  end
+
   create_table "questions", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "title", limit: 120, null: false
-    t.text "body", null: false
     t.bigint "industry_id", null: false
     t.bigint "occupation_id", null: false
+    t.string "title", limit: 120, null: false
+    t.text "body", null: false
     t.string "status_label", limit: 16, null: false
     t.bigint "accepted_answer_id"
     t.integer "answers_count", default: 0, null: false
-    t.integer "likes_count", default: 0, null: false
     t.integer "comments_count", default: 0, null: false
     t.datetime "last_answered_at"
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "industry_category_id"
     t.bigint "occupation_category_id"
+    t.integer "likes_count", default: 0, null: false
     t.index ["industry_category_id", "status_label", "created_at"], name: "idx_q_indcat_status_created"
     t.index ["industry_category_id"], name: "index_questions_on_industry_category_id"
     t.index ["industry_id", "status_label", "created_at"], name: "idx_questions_industry_status_created"
@@ -131,6 +143,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_17_175513) do
   add_foreign_key "answers", "users"
   add_foreign_key "industry_categories", "industries"
   add_foreign_key "occupation_categories", "occupations"
+  add_foreign_key "question_likes", "questions"
+  add_foreign_key "question_likes", "users"
   add_foreign_key "questions", "industries"
   add_foreign_key "questions", "industry_categories"
   add_foreign_key "questions", "occupation_categories"
