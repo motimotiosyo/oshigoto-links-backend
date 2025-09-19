@@ -5,14 +5,14 @@ Rails.application.routes.draw do
     namespace :v1 do
       get :ping, to: "pings#show"
 
-      resources :questions, only: [:index, :show, :create, :update, :destroy] do
+      resources :questions, only: [ :index, :show, :create, :update, :destroy ] do
         # 回答へのいいね
         resources :answers, only: [] do
-          resource :answer_like, only: [:create, :destroy]
+          resource :answer_like, only: [ :create, :destroy ]
         end
 
         # 質問へのいいね
-        resource :question_like, only: [:create, :destroy]
+        resource :question_like, only: [ :create, :destroy ]
       end
 
       # ユーザー登録

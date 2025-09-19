@@ -14,7 +14,7 @@ class Api::V1::QuestionLikesController < ApplicationController
       likes_count: @question.reload.likes_count
     }, status: status
   rescue ActiveRecord::RecordInvalid
-    render json: { errors: ["User must exist"] }, status: :unprocessable_entity
+    render json: { errors: [ "User must exist" ] }, status: :unprocessable_entity
   rescue ActiveRecord::RecordNotUnique
     render json: {
       liked: true,
