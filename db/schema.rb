@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_19_030527) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_19_194022) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "answer_likes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "answer_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["answer_id"], name: "index_answer_likes_on_answer_id"
+    t.index ["user_id", "answer_id"], name: "index_answer_likes_on_user_id_and_answer_id", unique: true
+    t.index ["user_id"], name: "index_answer_likes_on_user_id"
+  end
 
   create_table "answers", force: :cascade do |t|
     t.bigint "question_id", null: false
@@ -122,6 +132,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_19_030527) do
     t.index ["industry_category_id"], name: "index_questions_on_industry_category_id"
     t.index ["industry_id", "status_label", "created_at"], name: "idx_questions_industry_status_created"
     t.index ["industry_id"], name: "index_questions_on_industry_id"
+    t.index ["likes_count"], name: "index_questions_on_likes_count"
     t.index ["occupation_category_id", "status_label", "created_at"], name: "idx_q_occucat_status_created"
     t.index ["occupation_category_id"], name: "index_questions_on_occupation_category_id"
     t.index ["occupation_id", "status_label", "created_at"], name: "idx_questions_occupation_status_created"
@@ -139,6 +150,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_19_030527) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "answer_likes", "answers"
+  add_foreign_key "answer_likes", "users"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
   add_foreign_key "industry_categories", "industries"
