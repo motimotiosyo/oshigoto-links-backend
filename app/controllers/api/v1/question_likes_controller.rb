@@ -1,30 +1,31 @@
-class Api::V1::AnswerLikesController < ApplicationController
-  before_action :set_answer
+# app/controllers/api/v1/question_likes_controller.rb
+class Api::V1::QuestionLikesController < ApplicationController
+  before_action :set_question
 
-  # POST /api/v1/answers/:answer_id/answer_like
+  # POST /api/v1/questions/:question_id/question_like
   def create
     uid = params[:user_id]
-    like = AnswerLike.find_by(user_id: uid, answer_id: @answer.id)
+    like = QuestionLike.find_by(user_id: uid, question_id: @question.id)
     status = like ? :ok : :created
-    like ||= AnswerLike.create!(user_id: uid, answer: @answer)
+    like ||= QuestionLike.create!(user_id: uid, question: @question)
 
     render json: {
       liked: true,
-      likes_count: @answer.reload.likes_count
+      likes_count: @question.reload.likes_count
     }, status: status
   rescue ActiveRecord::RecordInvalid
-    render json: { errors: [ "User must exist" ] }, status: :unprocessable_entity
+    render json: { errors: ["User must exist"] }, status: :unprocessable_entity
   rescue ActiveRecord::RecordNotUnique
     render json: {
       liked: true,
-      likes_count: @answer.reload.likes_count
+      likes_count: @question.reload.likes_count
     }, status: :ok
   end
 
-  # DELETE /api/v1/answers/:answer_id/answer_like
+  # DELETE /api/v1/questions/:question_id/question_like
   def destroy
     uid = params[:user_id]
-    if (like = AnswerLike.find_by(user_id: uid, answer_id: @answer.id))
+    if (like = QuestionLike.find_by(user_id: uid, question_id: @question.id))
       like.destroy
     end
     head :no_content
@@ -32,7 +33,7 @@ class Api::V1::AnswerLikesController < ApplicationController
 
   private
 
-  def set_answer
-    @answer = Answer.find(params[:answer_id])
+  def set_question
+    @question = Question.find(params[:question_id])
   end
 end
