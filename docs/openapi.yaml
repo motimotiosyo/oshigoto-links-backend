@@ -291,7 +291,10 @@ components:
         - id
         - title
         - body
-        - tags
+        - status
+        - likes_count
+        - comments_count
+        - user
         - created_at
         - updated_at
       properties:
@@ -308,6 +311,32 @@ components:
           type: string
           description: おしごと体験投稿の本文
           example: "在宅ワークを始めてから集中力を保つのに苦労していましたが、ポモドーロテクニックを導入することで劇的に改善しました。"
+        status:
+          type: string
+          description: 投稿ステータス
+          enum: [draft, published]
+          example: "published"
+        published_at:
+          type: string
+          format: date-time
+          description: 公開日時 (ISO8601/UTC)
+          example: "2025-01-15T10:00:00Z"
+        likes_count:
+          type: integer
+          description: いいね数
+          example: 5
+        comments_count:
+          type: integer
+          description: コメント数
+          example: 2
+        user:
+          $ref: '#/components/schemas/User'
+        industry_category:
+          $ref: '#/components/schemas/IndustryCategory'
+          nullable: true
+        occupation_category:
+          $ref: '#/components/schemas/OccupationCategory'
+          nullable: true
         created_at:
           type: string
           format: date-time
