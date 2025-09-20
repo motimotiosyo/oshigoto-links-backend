@@ -21,6 +21,8 @@ Rails.application.routes.draw do
       resources :industries, only: :index
       # 職種
       resources :occupations, only: :index
+      # 経験投稿
+      resources :experience_posts, only: [ :index, :show, :create, :update, :destroy ]
 
       # 認証
       namespace :auth do

@@ -14,7 +14,8 @@ module Api
 
         offset = (page - 1) * per_page
 
-        experiences = ExperiencePost.sorted_by(sort)
+        experiences = ExperiencePost.includes(:user, :industry_category, :occupation_category)
+                      .sorted_by(sort)
                       .limit(per_page)
                       .offset(offset)
 
@@ -85,7 +86,7 @@ module Api
       end
 
       def experience_post_params
-        params.require(:experience_post).permit(:title, :body, :user_id, :industry_id, :occupation_id, :status, :published_at)
+        params.require(:experience_post).permit(:title, :body, :user_id, :industry_category_id, :occupation_category_id, :status, :published_at)
       end
 
       def serialize_experience(experience)
@@ -93,6 +94,24 @@ module Api
           id: experience.id,
           title: experience.title,
           body: experience.body,
+          status: experience.status,
+          published_at: experience.published_at&.iso8601,
+          likes_count: experience.likes_count,
+          comments_count: experience.comments_count,
+          user: {
+            id: experience.user.id,
+            account_name: experience.user.account_name
+          },
+          industry_category: experience.industry_category ? {
+            id: experience.industry_category.id,
+            name: experience.industry_category.name,
+            industry_name: experience.industry_category.industry.name
+          } : nil,
+          occupation_category: experience.occupation_category ? {
+            id: experience.occupation_category.id,
+            name: experience.occupation_category.name,
+            occupation_name: experience.occupation_category.occupation.name
+          } : nil,
           created_at: experience.created_at.iso8601,
           updated_at: experience.updated_at.iso8601
         }
