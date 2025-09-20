@@ -5,72 +5,76 @@
 # 開発環境用テストデータ
 # NOTE: user_id, industry_id, occupation_idは仮のIDを使用（関連テーブル作成後に修正予定）
 
-puts "Creating development test data..."
+# db/seeds.rb
 
-# 既存データをクリア（開発環境のみ）
-if Rails.env.development?
-  ExperiencePost.destroy_all
-  puts "Cleared existing experience posts"
+# 1) マスタ系（業界/職種）
+load Rails.root.join("db/seeds/industries.rb")
+load Rails.root.join("db/seeds/occupations.rb")
+
+puts "== Seeding users =="
+
+# 2) ユーザー作成
+user1 = User.find_or_create_by!(account_name: "user1") do |u|
+  u.email    = "user1@example.com"
+  u.password = "password"
 end
 
-# テストデータ作成
-test_posts = [
+user2 = User.find_or_create_by!(account_name: "user2") do |u|
+  u.email    = "user2@example.com"
+  u.password = "password"
+end
+
+# 3) 参照用ヘルパ（名前からIDを取得）
+def industry_id_by_name(name)
+  Industry.find_by!(name: name).id
+end
+
+def occupation_id_by_name(name)
+  Occupation.find_by!(name: name).id
+end
+
+# 4) 開発環境では投稿を入れ替えたい場合があるので、既存データを削除
+puts "== Seeding experience_posts =="
+ExperiencePost.destroy_all if Rails.env.development?
+
+posts = [
   {
     title: "在宅ワークでの集中力向上方法",
-    body: "在宅ワークを始めてから集中力を保つのに苦労していましたが、ポモドーロテクニックを導入することで劇的に改善しました。25分集中→5分休憩のサイクルで作業効率が向上し、疲労感も軽減されました。",
-    user_id: 1,
-    industry_id: 1,
-    occupation_id: 1,
+    body:  "在宅ワークを始めてから集中力を保つのに…",
+    user:  user1,
+    industry_name:   "IT・ソフトウェア",  # ←「業界 大分類」名に合わせる
+    occupation_name: "IT系",             # ←「職種 大分類」名に合わせる
     status: "published"
   },
   {
     title: "リモート会議でのコミュニケーション改善",
-    body: "リモート会議でうまく発言できずにいましたが、事前にアジェンダを確認し、話すポイントをメモしておくことで自信を持って参加できるようになりました。",
-    user_id: 1,
-    industry_id: 2,
-    occupation_id: 2,
+    body:  "リモート会議でうまく発言できずに…",
+    user:  user1,
+    industry_name:   "広告・マスコミ",
+    occupation_name: "企画・管理系",
     status: "published"
   },
   {
     title: "家事と仕事の両立で学んだタイムマネジメント",
-    body: "育児をしながらフリーランスで働く中で、タスクの優先順位付けと時間の使い方を見直しました。朝の時間を有効活用することで、無理なく両立できています。",
-    user_id: 2,
-    industry_id: 3,
-    occupation_id: 3,
-    status: "published"
-  },
-  {
-    title: "副業での経験が本業に活かされた話",
-    body: "週末にWebライティングの副業をしていたところ、文章力や情報整理能力が向上し、本業での資料作成やメール対応が格段に改善されました。",
-    user_id: 2,
-    industry_id: 1,
-    occupation_id: 1,
-    status: "published"
-  },
-  {
-    title: "未経験からプログラミングを学んだ体験",
-    body: "全くの未経験からプログラミングを始めて半年。オンライン学習と実際にコードを書く練習を繰り返すことで、基本的なWebサイトが作れるようになりました。",
-    user_id: 3,
-    industry_id: 4,
-    occupation_id: 4,
+    body:  "育児をしながらフリーランスで働く中で…",
+    user:  user2,
+    industry_name:   "家庭・生活",
+    occupation_name: "家庭人",
     status: "published"
   }
 ]
 
-created_count = 0
-test_posts.each do |post_data|
-  post = ExperiencePost.find_or_create_by!(
-    title: post_data[:title]
-  ) do |experience_post|
-    experience_post.body = post_data[:body]
-    experience_post.user_id = post_data[:user_id]
-    experience_post.industry_id = post_data[:industry_id]
-    experience_post.occupation_id = post_data[:occupation_id]
-    experience_post.status = post_data[:status]
-    experience_post.published_at = Time.current
+created = 0
+posts.each do |p|
+  rec = ExperiencePost.find_or_create_by!(title: p[:title]) do |x|
+    x.body          = p[:body]
+    x.user_id       = p[:user].id
+    x.industry_id   = industry_id_by_name(p[:industry_name])
+    x.occupation_id = occupation_id_by_name(p[:occupation_name])
+    x.status        = p[:status]
+    x.published_at  = Time.current
   end
-  created_count += 1 if post.previously_new_record?
+  created += 1 if rec.previously_new_record?
 end
 
-puts "Created #{created_count} experience posts"
-puts "Total experience posts: #{ExperiencePost.count}"
+puts "Created #{created} experience_posts (total: #{ExperiencePost.count})"

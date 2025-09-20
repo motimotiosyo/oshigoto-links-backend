@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   get "/healthz", to: "healthz#show"
   namespace :api do
     namespace :v1 do
+      get "occupations/index"
+      get "industries/index"
       get :ping, to: "pings#show"  # TODO: 開発後に削除
       resources :experience_posts, only: [ :index, :show, :create, :update, :destroy ]
       resources :questions, only: [ :index, :show, :create, :update, :destroy ] do
