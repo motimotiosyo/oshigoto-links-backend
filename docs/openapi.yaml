@@ -15,6 +15,10 @@ servers:
 tags:
   - name: ExperiencePosts
     description: おしごと体験投稿の管理
+  - name: Industries
+    description: 業界マスタデータ
+  - name: Occupations
+    description: 職種マスタデータ
 
 paths:
   /experience_posts:
@@ -228,6 +232,50 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  /industries:
+    get:
+      operationId: listIndustries
+      summary: 業界一覧取得
+      description: 業界とそのカテゴリの階層データを取得
+      tags:
+        - Industries
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  industries:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Industry'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /occupations:
+    get:
+      operationId: listOccupations
+      summary: 職種一覧取得
+      description: 職種とそのカテゴリの階層データを取得
+      tags:
+        - Occupations
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  occupations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Occupation'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
 components:
   securitySchemes:
     bearerAuth:
@@ -243,7 +291,10 @@ components:
         - id
         - title
         - body
-        - tags
+        - status
+        - likes_count
+        - comments_count
+        - user
         - created_at
         - updated_at
       properties:
@@ -260,6 +311,34 @@ components:
           type: string
           description: おしごと体験投稿の本文
           example: "在宅ワークを始めてから集中力を保つのに苦労していましたが、ポモドーロテクニックを導入することで劇的に改善しました。"
+        status:
+          type: string
+          description: 投稿ステータス
+          enum: [draft, published]
+          example: "published"
+        published_at:
+          type: string
+          format: date-time
+          description: 公開日時 (ISO8601/UTC)
+          example: "2025-01-15T10:00:00Z"
+        likes_count:
+          type: integer
+          description: いいね数
+          example: 5
+        comments_count:
+          type: integer
+          description: コメント数
+          example: 2
+        user:
+          $ref: '#/components/schemas/User'
+        industry_category:
+          allOf:
+            - $ref: '#/components/schemas/IndustryCategory'
+          nullable: true
+        occupation_category:
+          allOf:
+            - $ref: '#/components/schemas/OccupationCategory'
+          nullable: true
         created_at:
           type: string
           format: date-time
@@ -288,6 +367,22 @@ components:
           description: おしごと体験投稿の本文
           minLength: 1
           example: "在宅ワークを始めてから集中力を保つのに苦労していましたが、ポモドーロテクニックを導入することで劇的に改善しました。25分集中→5分休憩のサイクルで作業効率が向上し、疲労感も軽減されました。"
+        industry_category_id:
+          type: integer
+          description: 業界カテゴリID
+          nullable: true
+          example: 19
+        occupation_category_id:
+          type: integer
+          description: 職種カテゴリID
+          nullable: true
+          example: 27
+        status:
+          type: string
+          description: 投稿ステータス
+          enum: [draft, published]
+          default: published
+          example: "published"
 
     Pagination:
       type: object
@@ -420,3 +515,143 @@ components:
               code: "INTERNAL"
               message: "サーバーエラーが発生しました"
               request_id: "req_123456789"
+
+    User:
+      type: object
+      required:
+        - id
+        - account_name
+      properties:
+        id:
+          type: integer
+          description: ユーザーID
+          example: 1
+        account_name:
+          type: string
+          description: アカウント名
+          example: "test_user"
+
+    Industry:
+      type: object
+      required:
+        - id
+        - name
+        - code
+        - position
+        - categories
+      properties:
+        id:
+          type: integer
+          description: 業界ID
+          example: 1
+        name:
+          type: string
+          description: 業界名
+          example: "IT・ソフトウェア"
+        code:
+          type: string
+          description: 業界コード
+          example: "x95593bf4"
+        position:
+          type: integer
+          description: 表示順
+          example: 1
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryItem'
+
+    Occupation:
+      type: object
+      required:
+        - id
+        - name
+        - code
+        - position
+        - categories
+      properties:
+        id:
+          type: integer
+          description: 職種ID
+          example: 1
+        name:
+          type: string
+          description: 職種名
+          example: "IT専門職"
+        code:
+          type: string
+          description: 職種コード
+          example: "xa9e782eb"
+        position:
+          type: integer
+          description: 表示順
+          example: 1
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryItem'
+
+    CategoryItem:
+      type: object
+      required:
+        - id
+        - name
+        - code
+        - position
+      properties:
+        id:
+          type: integer
+          description: カテゴリID
+          example: 19
+        name:
+          type: string
+          description: カテゴリ名
+          example: "Webサービス"
+        code:
+          type: string
+          description: カテゴリコード
+          example: "x8e67e6a0"
+        position:
+          type: integer
+          description: 表示順
+          example: 1
+
+    IndustryCategory:
+      type: object
+      required:
+        - id
+        - name
+        - industry_name
+      properties:
+        id:
+          type: integer
+          description: 業界カテゴリID
+          example: 19
+        name:
+          type: string
+          description: 業界カテゴリ名
+          example: "Webサービス"
+        industry_name:
+          type: string
+          description: 親業界名
+          example: "IT・ソフトウェア"
+
+    OccupationCategory:
+      type: object
+      required:
+        - id
+        - name
+        - occupation_name
+      properties:
+        id:
+          type: integer
+          description: 職種カテゴリID
+          example: 27
+        name:
+          type: string
+          description: 職種カテゴリ名
+          example: "システムエンジニア"
+        occupation_name:
+          type: string
+          description: 親職種名
+          example: "IT専門職"
