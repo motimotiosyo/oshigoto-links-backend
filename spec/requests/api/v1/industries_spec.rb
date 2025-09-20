@@ -7,5 +7,4 @@ RSpec.describe "Api::V1::Industries", type: :request do
       expect(response).to have_http_status(:success)
     end
   end
-
 end

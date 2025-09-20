@@ -30,4 +30,3 @@ occupations.each.with_index(1) do |(parent, children), i|
     OccupationCategory.find_or_create_by!(occupation: occ, code: slugify(child)) { |c| c.name = child; c.position = j }
   end
 end
-

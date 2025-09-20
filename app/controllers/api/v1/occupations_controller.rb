@@ -1,6 +1,12 @@
-class Api::V1::OccupationsController < ApplicationController
-  def index
-    occupations = Occupation.includes(:occupation_categories)
-    render json: occupations.as_json(include: :occupation_categories)
+module Api
+  module V1
+    class OccupationsController < ApplicationController
+      skip_auth_for :index
+
+      def index
+        occupations = Occupation.order(:position).select(:id, :name, :code)
+        render json: { occupations: occupations }
+      end
+    end
   end
 end

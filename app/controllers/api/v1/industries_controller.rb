@@ -1,6 +1,12 @@
-class Api::V1::IndustriesController < ApplicationController
-  def index
-    industries = Industry.includes(:industry_categories)
-    render json: industries.as_json(include: :industry_categories)
+module Api
+  module V1
+    class IndustriesController < ApplicationController
+      skip_auth_for :index
+
+      def index
+        industries = Industry.order(:position).select(:id, :name, :code)
+        render json: { industries: industries }
+      end
+    end
   end
 end
