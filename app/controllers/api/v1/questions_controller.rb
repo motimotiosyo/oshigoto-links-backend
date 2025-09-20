@@ -73,9 +73,8 @@ module Api
 
       def question_params
         params.require(:question).permit(
-          :title, :body,
-          :user_id, :industry_id, :occupation_id,
-          :status_label, :accepted_answer_id
+          :title, :body, :status_label,
+          :industry_id, :occupation_id
         )
       end
 

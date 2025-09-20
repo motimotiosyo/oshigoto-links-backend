@@ -11,6 +11,7 @@ class Question < ApplicationRecord
 
   # 質問に対して複数の回答。質問が削除されたら関連回答も削除される
   has_many :answers, dependent: :destroy
+  has_many :question_likes, dependent: :destroy
 
   # バリデーション。タイトル、本文、ステータスは必須。タイトルは120文字以内。
   # ステータスは "open" / "answered" / "closed" のいずれか。
