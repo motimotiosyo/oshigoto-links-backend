@@ -332,10 +332,12 @@ components:
         user:
           $ref: '#/components/schemas/User'
         industry_category:
-          $ref: '#/components/schemas/IndustryCategory'
+          allOf:
+            - $ref: '#/components/schemas/IndustryCategory'
           nullable: true
         occupation_category:
-          $ref: '#/components/schemas/OccupationCategory'
+          allOf:
+            - $ref: '#/components/schemas/OccupationCategory'
           nullable: true
         created_at:
           type: string
