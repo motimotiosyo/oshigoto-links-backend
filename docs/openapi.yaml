@@ -485,6 +485,7 @@ components:
               message: "サーバーエラーが発生しました"
               request_id: "req_123456789"
 
+  schemas:
     User:
       type: object
       required:
