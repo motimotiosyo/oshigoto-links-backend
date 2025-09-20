@@ -8,9 +8,8 @@ class ExperiencePost < ApplicationRecord
   validates :title, presence: true, length: { maximum: 120 }
   validates :body, presence: true
   validates :user_id, presence: true
-  validates :industry_id, presence: true
-  validates :occupation_id, presence: true
   validates :status, presence: true, inclusion: { in: %w[draft published] }
+  # 業界・職種カテゴリは任意（未選択を許可）
 
   # Scopes
   scope :recent, -> { order(created_at: :desc) }

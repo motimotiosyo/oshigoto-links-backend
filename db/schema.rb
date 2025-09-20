@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_19_194022) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_20_085944) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -48,8 +48,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_19_194022) do
     t.timestamptz "published_at"
     t.integer "likes_count", default: 0, null: false
     t.integer "comments_count", default: 0, null: false
+    t.bigint "industry_category_id"
+    t.bigint "occupation_category_id"
     t.index ["created_at"], name: "index_experience_posts_on_created_at"
+    t.index ["industry_category_id"], name: "index_experience_posts_on_industry_category_id"
     t.index ["industry_id", "created_at"], name: "index_experience_posts_on_industry_id_and_created_at"
+    t.index ["occupation_category_id"], name: "index_experience_posts_on_occupation_category_id"
     t.index ["occupation_id", "created_at"], name: "index_experience_posts_on_occupation_id_and_created_at"
     t.index ["updated_at"], name: "index_experience_posts_on_updated_at"
     t.index ["user_id", "created_at"], name: "index_experience_posts_on_user_id_and_created_at"
@@ -154,6 +158,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_19_194022) do
   add_foreign_key "answer_likes", "users"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
+  add_foreign_key "experience_posts", "industry_categories"
+  add_foreign_key "experience_posts", "occupation_categories"
   add_foreign_key "industry_categories", "industries"
   add_foreign_key "occupation_categories", "occupations"
   add_foreign_key "question_likes", "questions"
